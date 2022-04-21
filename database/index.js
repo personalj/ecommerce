@@ -1,4 +1,5 @@
 const { Sequelize } = require('sequelize')
+require('dotenv').config()
 
 const sequelize = new Sequelize(
     `postgres://${process.env.USER}:${process.env.PASSWORD}@${process.env.URL}:${process.env.PORT}/${process.env.DB}`,
