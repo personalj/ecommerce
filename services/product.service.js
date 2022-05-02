@@ -1,7 +1,8 @@
 const {
     Product,
     Category,
-    Stock
+    Stock,
+    Attribute
 } = require('../database/models')
 
 async function getProductsList(page = 1) {
@@ -36,6 +37,30 @@ function countPages(count, limit ) {
     return Math.ceil(count / limit)
 }
 
+async function getProductById(id) {
+    try {
+        return await Product.findOne({
+            where: {
+                id
+            },
+            include: [
+                {
+                    model: Category,
+                },
+                {
+                    model: Stock,
+                },
+                {
+                    model: Attribute,
+                }
+            ],
+        })
+    } catch(e) {
+        throw new Error(e)
+    }
+}
+
 module.exports = {
-    getProductsList
+    getProductsList,
+    getProductById
 }
