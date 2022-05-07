@@ -13,7 +13,7 @@ Product.hasOne(Stock, { foreignKey: 'product_id' })
 Stock.belongsTo(Product, { foreignKey: 'product_id' })
 //
 
-// product - attributes M2O
+// product - attributes O2O
 Product.hasOne(Attribute, { foreignKey: 'product_id' })
 Attribute.belongsTo(Product, { foreignKey: 'product_id' })
 //

@@ -60,7 +60,34 @@ async function getProductById(id) {
     }
 }
 
+async function createProduct(product) {
+    try {
+        const productInfo = await Product.create(product, {
+            include: [
+                {
+                    model: Attribute
+                },
+                {
+                    model: Category
+                }
+            ],
+        });
+
+        const attributes = {
+           ...product,
+            product_id: productInfo.id
+        }
+
+        await Attribute.create(attributes)
+
+        return productInfo
+    } catch(e) {
+        throw new Error(e)
+    }
+}
+
 module.exports = {
     getProductsList,
-    getProductById
+    getProductById,
+    createProduct
 }
