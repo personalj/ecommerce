@@ -1,7 +1,8 @@
 const {
     getProductListController,
     getProductController,
-    createProductController
+    createProductController,
+    createProductStockController
 } = require('../controllers')
 
 function initProductRoutes(app) {
@@ -10,6 +11,8 @@ function initProductRoutes(app) {
     app.get('/product/:id', getProductController)
 
     app.post('/products', createProductController)
+
+    app.post('/product/stock/:id', createProductStockController)
 }
 
 module.exports = initProductRoutes
