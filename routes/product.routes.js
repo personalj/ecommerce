@@ -8,11 +8,11 @@ const {
 function initProductRoutes(app) {
     app.get('/products', getProductListController)
 
-    app.get('/product/:id', getProductController)
+    app.get('/products/:id', getProductController)
 
     app.post('/products', createProductController)
 
-    app.post('/product/stock/:id', createProductStockController)
+    app.post('/products/stock/:id', createProductStockController)
 }
 
 module.exports = initProductRoutes
