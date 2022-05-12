@@ -2,6 +2,9 @@ const {
     responseService,
     productService
 } = require('../../services')
+const {
+    productModelDtoMapper,
+} = require('../../mappers/products')
 
 async function createProductController(req, res) {
     try {
@@ -11,7 +14,7 @@ async function createProductController(req, res) {
 
         responseService.sendSuccessResponse(
             res, {
-                product
+                product: productModelDtoMapper(product)
             }, 201
         )
     } catch (e) {

@@ -59,19 +59,12 @@ async function getProductById(id) {
 
 async function createProduct(product) {
     try {
-        const productInfo = await Product.create(product);
-
-        const attributes = {
-           ...product,
-            productId: productInfo.id
-        }
-
-        await Attribute.create(attributes)
-
-        return {
-            ...productInfo.dataValues,
-            ...attributes
-        }
+       return await Product.create(product, {
+           include: [{
+               model: Attribute
+           }]
+       })
+        
     } catch(e) {
         throw new Error(e)
     }

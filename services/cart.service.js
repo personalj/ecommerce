@@ -63,11 +63,6 @@ async function addUpdateCart(cartInfo) {
             })
 
            for(const item of cartInfo.items) {
-               await CartItem.create({
-                   cartId: cart.id,
-                   productId: item.id,
-                   quantity: item.quantity
-               })
                await addItemToCart(cart.id, item.id, item.quantity)
            }
         }
