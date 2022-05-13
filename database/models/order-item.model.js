@@ -11,7 +11,6 @@ const Order = sequelize.define(
         },
         orderId: {
             type: DataTypes.INTEGER,
-            allowNull: false,
             field: 'order_id'
         },
         productId: {

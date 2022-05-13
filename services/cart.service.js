@@ -4,13 +4,29 @@ const {
     CartItem,
     Stock
 } = require('../database/models')
+const { Op } = require("sequelize")
 const { getProductById } = require( './product.service')
+const { orderProductIds } =require('../utils/helpers')
 
 const addItemToCart = async (cartId, productId, quantity) => {
     await CartItem.create({
         cartId: cartId,
         productId: productId,
         quantity: quantity
+    })
+}
+
+const getUserCart = async (user) => {
+    return await Cart.findOne({
+        where: {
+            userId: user.id,
+            isClosed: {
+                [Op.is]: false
+            }
+        },
+        include: [{
+            model: CartItem
+        }],
     })
 }
 
@@ -45,14 +61,7 @@ async function addUpdateCart(cartInfo) {
             }
         })
 
-        const userCart = user && await Cart.findOne({
-            where: {
-                userId: user.id
-            },
-            include: [{
-                model: CartItem
-            }],
-        })
+        const userCart = user && await getUserCart(user)
 
         if (!userCart || userCart.isClosed) {
             const cart = await Cart.create({
@@ -65,6 +74,8 @@ async function addUpdateCart(cartInfo) {
            for(const item of cartInfo.items) {
                await addItemToCart(cart.id, item.id, item.quantity)
            }
+
+           return userCart
         }
 
 
@@ -86,8 +97,7 @@ async function addUpdateCart(cartInfo) {
             })
         }
 
-
-        return userCart
+        return getUserCart(user)
 
     } catch(e) {
         throw new Error(e)
@@ -128,18 +138,6 @@ async function deleteFromCart(cartId, productId) {
     return cartItem
 
 }
-
-
-function orderProductIds(ids) {
-    const productIds = []
-
-    for (const order of ids) {
-        productIds.push(order.id)
-    }
-
-    return productIds
-}
-
 
 module.exports = {
     addUpdateCart,
