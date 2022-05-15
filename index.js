@@ -2,7 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const {
     initProductRoutes,
-    initCartRoutes
+    initCartRoutes,
+    initOrderRoutes
 } = require("./routes")
 
 const app = express()
@@ -16,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 initProductRoutes(app)
 initCartRoutes(app)
+initOrderRoutes(app)
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

@@ -1,0 +1,23 @@
+head
+    title Cart info
+body
+    h1 Cart info list
+    table(border=1, cellpadding=6)
+        thead
+            tr
+                th Title
+                th Price
+                th Quantity
+                th Sum
+        tbody
+            each item in CartItems
+                tr
+                    td= item.Product.title
+                    td= item.Product.price + ' usd'
+                    td= item.quantity
+                    td= (+item.quantity * item.Product.price) + ' usd'
+    br
+    span Total sum:
+    span
+        strong= total + ' usd'
+
