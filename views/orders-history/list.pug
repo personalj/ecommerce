@@ -1,0 +1,36 @@
+head
+    title Orders history
+body
+    h1 Orders history
+    hr
+    span Total sum:
+    span
+       strong= total + ' usd'
+    if OrderItems.length
+        table(border=1, cellpadding=6)
+            thead
+                tr
+                    th Title
+                    th Price
+                    th Quantity
+            tbody
+                each item in OrderItems
+                    tr
+                        td= item.Product.title
+                        td= item.Product.price + ' usd'
+                        td= item.quantity
+    else
+        h2 No results
+
+    h2 Order info
+    table(border=1, cellpadding=6)
+        thead
+            tr
+                th User email
+                th Cart id
+                th Date
+        tbody
+            tr
+                td= User.email
+                td= cartId
+                td= new Date(updatedAt).toLocaleString()

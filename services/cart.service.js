@@ -6,7 +6,6 @@ const {
 } = require('../database/models')
 const { Op } = require("sequelize")
 const { getProductById } = require( './product.service')
-const { orderProductIds } =require('../utils/helpers')
 
 const addItemToCart = async (cartId, productId, quantity) => {
     await CartItem.create({
@@ -137,6 +136,16 @@ async function deleteFromCart(cartId, productId) {
 
     return cartItem
 
+}
+
+function orderProductIds(ids) {
+    const productIds = []
+
+    for (const order of ids) {
+        productIds.push(order.id)
+    }
+
+    return productIds
 }
 
 module.exports = {

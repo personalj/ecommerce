@@ -14,6 +14,11 @@ const Order = sequelize.define(
             allowNull: false,
             field: 'user_id'
         },
+        cartId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            field: 'cart_id'
+        },
         total: {
             type: DataTypes.FLOAT,
             allowNull: false
