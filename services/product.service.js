@@ -13,10 +13,7 @@ async function getProductsList(page = 1) {
             include: [
                 {
                     model: Category,
-                },
-                {
-                    model: Stock,
-                },
+                }
             ],
             limit,
             offset: (page - 1) * limit,
@@ -62,16 +59,7 @@ async function getProductById(id) {
 
 async function createProduct(product) {
     try {
-        const productInfo = await Product.create(product, {
-            include: [
-                {
-                    model: Attribute
-                },
-                {
-                    model: Category
-                }
-            ],
-        });
+        const productInfo = await Product.create(product);
 
         const attributes = {
            ...product,
@@ -80,7 +68,38 @@ async function createProduct(product) {
 
         await Attribute.create(attributes)
 
-        return productInfo
+        return {
+            ...productInfo.dataValues,
+            ...attributes
+        }
+    } catch(e) {
+        throw new Error(e)
+    }
+}
+
+async function createProductStock(quantity, id) {
+    try {
+        const productStock = await Stock.findOne({
+            where: {
+                product_id: id
+            },
+        })
+
+
+        if (productStock) {
+            await productStock.update({
+                quantity: productStock.quantity > 0 ? productStock.quantity + quantity : 0
+            })
+            return productStock
+        }
+
+
+       return await Stock.create({
+            productId: id,
+            quantity
+        })
+
+
     } catch(e) {
         throw new Error(e)
     }
@@ -89,5 +108,6 @@ async function createProduct(product) {
 module.exports = {
     getProductsList,
     getProductById,
-    createProduct
+    createProduct,
+    createProductStock
 }
