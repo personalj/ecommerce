@@ -11,16 +11,15 @@ const Attribute = sequelize.define(
         },
         productId: {
             type: DataTypes.INTEGER,
-            allowNull: true,
             field: 'product_id'
         },
         size: {
             type: DataTypes.STRING,
-            allowNull: true,
+            allowNull: false,
         },
         color: {
             type: DataTypes.STRING,
-            allowNull: true,
+            allowNull: false,
         },
         manufacturer: {
             type: DataTypes.STRING,
