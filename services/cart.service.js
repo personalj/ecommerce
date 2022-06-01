@@ -99,6 +99,41 @@ async function addUpdateCart(cartInfo) {
     }
 }
 
+async function deleteFromCart(cartId, productId) {
+    const product = await getProductById(productId)
+
+    const cartItem = await CartItem.findOne({
+        where: {
+            cartId,
+            productId,
+        },
+    })
+
+    if (!cartItem || !product) {
+        throw new Error('Product not found');
+    }
+
+    const userCart = await Cart.findOne({
+        where: {
+           id: cartId
+        },
+    })
+
+    const calcTotal = userCart.total - (product.price * cartItem.quantity)
+
+    await userCart.update({
+        where: {
+            id: cartId
+        },
+        total: calcTotal
+    })
+
+    await cartItem.destroy()
+
+    return cartItem
+
+}
+
 
 function orderProductIds(ids) {
     const productIds = []
@@ -112,5 +147,6 @@ function orderProductIds(ids) {
 
 
 module.exports = {
-    addUpdateCart
+    addUpdateCart,
+    deleteFromCart
 }
