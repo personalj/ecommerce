@@ -22,7 +22,7 @@ const Product = sequelize.define(
             allowNull: false,
         },
         image: {
-            type: DataTypes.STRING(150),
+            type: DataTypes.STRING,
             allowNull: true,
         },
         categoryId: {
