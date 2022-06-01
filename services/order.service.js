@@ -4,10 +4,17 @@ const {
     CartItem,
     Order,
     OrderItem,
-    Product
+    Product,
+    User
 } = require('../database/models')
-const { orderProductIds } =require('../utils/helpers')
 
+const addItemToOrder = async (id, productId, quantity) => {
+    await OrderItem.create({
+        orderId: id,
+        productId: productId,
+        quantity: quantity,
+    })
+}
 
 async function createOrder(id) {
     try {
@@ -31,35 +38,29 @@ async function createOrder(id) {
 
         const stockList = await Stock.findAll({
             where: {
-                id: [...orderProductIds(cart.CartItems)]
+                id: orderProductIds(cart.CartItems)
             }
         })
 
+
         for (const product of stockList) {
-            const order = cart.CartItems.find(order => order.id === product.productId)
+            const order = cart.CartItems.find(order => order.productId === product.productId)
             if (order.quantity > product.quantity) {
                 throw new Error('Not enough quantity in store');
             }
             await product.update({
                 quantity: product.quantity - order.quantity
             })
+        }
 
-            const orderInfo = {
-                userId: cart.user_id,
-                total: cart.total,
-                OrderItems: {
-                    productId: order.product_id,
-                    quantity: order.quantity,
-                }
-            }
+        const order = await Order.create({
+            userId: cart.userId,
+            total: cart.total,
+            cartId: cart.id
+        })
 
-            await Order.create(orderInfo, {
-                include: [
-                    {
-                        model: OrderItem
-                    }
-                ]
-            })
+        for(const item of cart.CartItems) {
+            await addItemToOrder(order.id, item.productId, item.quantity)
         }
 
         await cart.update({
@@ -104,7 +105,53 @@ async function getOrderInfo(cartId) {
     }
 }
 
+async function getOrderHistory(userId) {
+    try {
+
+        if(!userId) {
+            throw new Error("UserId is invalid");
+        }
+
+        const orderInfo = await Order.findOne({
+            where: {
+                userId
+            },
+            include: [
+                {
+                    model: User
+                },
+                {
+                    model: OrderItem,
+                    include: {
+                        model: Product
+                    }
+                },
+            ]
+        })
+
+        if(!orderInfo) {
+            throw new Error("Order doesn't exist");
+        }
+
+        return orderInfo
+
+    } catch(e) {
+        throw new Error(e)
+    }
+}
+
+function orderProductIds(ids) {
+    const productIds = []
+
+    for (const order of ids) {
+        productIds.push(order.productId)
+    }
+
+    return productIds
+}
+
 module.exports = {
     createOrder,
-    getOrderInfo
+    getOrderInfo,
+    getOrderHistory
 }
