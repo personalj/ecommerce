@@ -3,7 +3,8 @@ const {
     Cart,
     CartItem,
     Order,
-    OrderItem
+    OrderItem,
+    Product
 } = require('../database/models')
 const { orderProductIds } =require('../utils/helpers')
 
@@ -71,6 +72,39 @@ async function createOrder(id) {
     }
 }
 
+async function getOrderInfo(cartId) {
+    try {
+
+        if(!cartId) {
+            throw new Error("CartId is invalid");
+        }
+
+        const cartInfo = await Cart.findOne({
+            where: {
+                id: cartId
+            },
+            include: [
+                {
+                    model: CartItem,
+                    include: {
+                        model: Product
+                    }
+                },
+            ]
+        })
+
+        if(!cartInfo) {
+            throw new Error("Cart doesn't exist");
+        }
+
+        return cartInfo
+
+    }  catch(e) {
+        throw new Error(e)
+    }
+}
+
 module.exports = {
     createOrder,
+    getOrderInfo
 }
