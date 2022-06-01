@@ -39,8 +39,8 @@ Order.belongsTo(User, { foreignKey: 'user_id' })
 //
 
 // user - cart O2O
-User.hasOne(Cart, { foreignKey: 'product_id' })
-Cart.belongsTo(User, { foreignKey: 'product_id' })
+User.hasOne(Cart, { foreignKey: 'user_id' })
+Cart.belongsTo(User, { foreignKey: 'user_id' })
 //
 
 // order - order-item M2O

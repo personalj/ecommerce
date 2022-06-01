@@ -63,7 +63,7 @@ async function createProduct(product) {
 
         const attributes = {
            ...product,
-            product_id: productInfo.id
+            productId: productInfo.id
         }
 
         await Attribute.create(attributes)
@@ -81,7 +81,7 @@ async function createProductStock(quantity, id) {
     try {
         const productStock = await Stock.findOne({
             where: {
-                product_id: id
+                productId: id
             },
         })
 
