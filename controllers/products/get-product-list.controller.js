@@ -1,9 +1,4 @@
 const {
-    Product,
-    Category,
-    Stock
-} = require('../../database/models')
-const {
     responseService,
     productService
 } = require('../../services')

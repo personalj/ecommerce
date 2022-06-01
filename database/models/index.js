@@ -14,7 +14,7 @@ Stock.belongsTo(Product, { foreignKey: 'product_id' })
 //
 
 // product - attributes M2O
-Product.hasMany(Attribute, { foreignKey: 'product_id' })
+Product.hasOne(Attribute, { foreignKey: 'product_id' })
 Attribute.belongsTo(Product, { foreignKey: 'product_id' })
 //
 
