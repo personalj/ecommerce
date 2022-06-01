@@ -64,7 +64,7 @@ async function createProduct(product) {
                model: Attribute
            }]
        })
-        
+
     } catch(e) {
         throw new Error(e)
     }
