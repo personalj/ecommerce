@@ -1,4 +1,4 @@
-function ProductItemDto(id, price, title, desc, image, category, stock, attribute) {
+function ProductItemDto(id, price, title, desc, image, category, stock, attributes) {
     return {
         id,
         price,
@@ -7,7 +7,7 @@ function ProductItemDto(id, price, title, desc, image, category, stock, attribut
         image,
         category: category || null,
         stock: stock || null,
-        attribute: attribute || null
+        attributes: attributes || null
     }
 }
 

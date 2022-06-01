@@ -8,7 +8,7 @@ const {
 
 async function getProductListController(req, res) {
     try {
-        const page = +req.query.page
+        const page = +req.query.page || 1
 
         const { productList, pages } = await productService.getProductsList(page)
 
